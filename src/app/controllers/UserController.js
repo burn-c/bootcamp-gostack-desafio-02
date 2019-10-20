@@ -6,7 +6,9 @@ class UserController {
     // Inicio validation Yup
     const schema = Yup.object().shape({
       name: Yup.string().required(),
-      email: Yup.string().required(),
+      email: Yup.string()
+        .email()
+        .required(),
       password: Yup.string()
         .required()
         .min(6)
