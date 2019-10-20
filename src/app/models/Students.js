@@ -19,14 +19,18 @@ class Students extends Model {
       }
     );
 
-    this.addHook('beforeSave', async student => {
-      if (student.password) {
+    this.addHook('beforeSave', async students => {
+      if (students.password) {
         // eslint-disable-next-line no-param-reassign
-        student.password_hash = await bcrypt.hash(student.password, 8);
+        students.password_hash = await bcrypt.hash(students.password, 8);
       }
     });
 
     return this;
+  }
+
+  checkPassword(password) {
+    return bcrypt.compare(password, this.password_hash);
   }
 }
 
