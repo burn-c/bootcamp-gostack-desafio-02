@@ -1,3 +1,4 @@
+// import * as Yup from 'yup';
 // eslint-disable-next-line import/no-unresolved
 import Students from '../models/Students';
 
@@ -22,31 +23,25 @@ class StudentsController {
   }
 
   async update(req, res) {
-    const { email, oldPassword } = req.body;
+    const student = await Students.findOne({
+      where: { email: req.body.email }
+    });
 
-    const student = await Students.findByPk(req.studentId);
-
-    if (email !== student.email) {
-      const studentExists = await Students.findOne({
-        where: { email }
-      });
-
-      if (studentExists) {
-        return res.status(400).json({ error: 'Estudante já cadastrado!' });
-      }
+    if (!student) {
+      return res.json({ error: 'Estudante não cadastrado!' });
     }
-
-    if (oldPassword && !(await student.checkPassword(oldPassword))) {
-      return res.status(401).json({ error: 'Passwprd does not match' });
-    }
-
-    const { id, name, provider } = await student.update(req.body);
+    const { id, name, idade, peso, altura, provider } = await student.update(
+      req.body
+    );
     return res.json({
       id,
       name,
-      email,
+      idade,
+      peso,
+      altura,
       provider
     });
+    // return res.json({ error: 'Estudante não cadastrado!!' });
   }
 }
 
