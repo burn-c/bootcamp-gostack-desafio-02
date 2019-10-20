@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('students', {
+    return queryInterface.createTable('users', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false, // valor não pode ser nulo
@@ -16,16 +16,8 @@ module.exports = {
         allowNull: false,
         unique: true // Não podemos ter e-mails repetidos
       },
-      idade: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-      },
-      peso: {
-        type: Sequelize.FLOAT,
-        allowNull: false
-      },
-      altura: {
-        type: Sequelize.FLOAT,
+      password_hash: {
+        type: Sequelize.STRING,
         allowNull: false
       },
       provider: {
@@ -46,6 +38,6 @@ module.exports = {
   },
 
   down: queryInterface => {
-    return queryInterface.dropTable('students');
+    return queryInterface.dropTable('users');
   }
 };

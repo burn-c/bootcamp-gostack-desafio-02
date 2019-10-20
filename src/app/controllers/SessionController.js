@@ -1,23 +1,23 @@
 import jwt from 'jsonwebtoken';
 
-import Students from '../models/Students';
+import User from '../models/User';
 import authConfig from '../../config/auth';
 
 class SessionController {
   async store(req, res) {
     const { email, password } = req.body;
 
-    const students = await Students.findOne({ where: { email } });
+    const user = await User.findOne({ where: { email } });
 
-    if (!students) {
+    if (!user) {
       return res.status(401).json({ error: 'Usuário não cadastrado!' });
     }
 
-    if (!(await students.checkPassword(password))) {
+    if (!(await user.checkPassword(password))) {
       return res.status(401).json({ error: 'Erro de senha ou usuário!' });
     }
 
-    const { id, name } = students;
+    const { id, name } = user;
 
     return res.json({
       user: {

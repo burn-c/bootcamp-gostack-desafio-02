@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 import Students from '../models/Students';
 
 class StudentsController {
@@ -10,16 +11,42 @@ class StudentsController {
       return res.status(400).json({ error: 'Estudante já cadastrado!' });
     }
 
-    const { name, email } = await Students.create(req.body);
+    const { id, name, email, provider } = await Students.create(req.body);
 
     return res.json({
+      id,
       name,
-      email
+      email,
+      provider
     });
   }
 
   async update(req, res) {
-    return res.json({ ok: true });
+    const { email, oldPassword } = req.body;
+
+    const student = await Students.findByPk(req.studentId);
+
+    if (email !== student.email) {
+      const studentExists = await Students.findOne({
+        where: { email }
+      });
+
+      if (studentExists) {
+        return res.status(400).json({ error: 'Estudante já cadastrado!' });
+      }
+    }
+
+    if (oldPassword && !(await student.checkPassword(oldPassword))) {
+      return res.status(401).json({ error: 'Passwprd does not match' });
+    }
+
+    const { id, name, provider } = await student.update(req.body);
+    return res.json({
+      id,
+      name,
+      email,
+      provider
+    });
   }
 }
 
