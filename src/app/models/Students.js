@@ -10,8 +10,6 @@ class Students extends Model {
         idade: Sequelize.INTEGER,
         peso: Sequelize.FLOAT,
         altura: Sequelize.FLOAT,
-        password: Sequelize.VIRTUAL,
-        password_hash: Sequelize.STRING,
         provider: Sequelize.BOOLEAN
       },
       {
