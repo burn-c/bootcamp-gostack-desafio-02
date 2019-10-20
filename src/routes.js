@@ -9,12 +9,12 @@ const routes = new Router();
 
 routes.post('/sessions', SessionController.store);
 
+routes.post('/students', StudentsController.store);
+routes.put('/students', StudentsController.update);
+
 routes.use(authMiddlewares);
 
 routes.post('/users', UserController.store);
 routes.put('/users', UserController.update);
-
-routes.post('/students', StudentsController.store);
-routes.put('/students', StudentsController.update);
 
 export default routes;
